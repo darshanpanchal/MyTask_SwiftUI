@@ -16,11 +16,11 @@ struct Task {
     
     static func createMockTasks() -> [Task] {
         return [
-            Task(id: 1, name: "Go to gym", description: "Back Workout", isActive: true, finishDate: Date())
+            Task(id: 1, name: "Go to gym", description: "Back Workout", isActive: false, finishDate: Date())
             ,
-            Task(id: 2, name: "Car wash", description: "Downtoen car wash center", isActive: true, finishDate: Date()),
-            Task(id: 3, name: "Office Work", description: "Finish Picker Module", isActive: false, finishDate: Date()),
-            Task(id: 2, name: "Car wash", description: "Downtoen car wash center", isActive: true, finishDate: Date()),
+            Task(id: 2, name: "Car wash", description: "Downtoen car wash center", isActive: false, finishDate: Date()),
+            Task(id: 3, name: "Office Work", description: "Finish Picker Module", isActive: true, finishDate: Date()),
+            Task(id: 2, name: "Car wash", description: "Downtoen car wash center", isActive: false, finishDate: Date()),
         ]
     }
 }
