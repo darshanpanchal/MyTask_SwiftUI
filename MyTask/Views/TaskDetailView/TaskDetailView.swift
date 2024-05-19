@@ -9,9 +9,11 @@ import SwiftUI
 
 struct TaskDetailView: View {
     
-    
+    @ObservedObject var taskViewModel: TaskViewModel
     @Binding var showTaskDetailView:Bool
     @Binding var taskDetail:Task
+    @Binding var refreshTaskList:Bool
+
     
     var body: some View {
         NavigationStack {
@@ -29,7 +31,10 @@ struct TaskDetailView: View {
                 }
                 Section{
                     Button{
-                        
+                        if(taskViewModel.deleteTask(task: taskDetail)){
+                            showTaskDetailView.toggle()
+                            refreshTaskList.toggle()
+                        }
                     }label: {
                         Text("Delete")
                             .fontWeight(.bold)
@@ -51,8 +56,10 @@ struct TaskDetailView: View {
                 })
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button{
-                        print("Add ")
-                        showTaskDetailView.toggle()
+                        if(taskViewModel.updateTask(task: taskDetail)){
+                            showTaskDetailView.toggle()
+                            refreshTaskList.toggle()
+                        }
                     }label: {
                         Text("Update")
                     }
@@ -63,7 +70,10 @@ struct TaskDetailView: View {
     
     struct TaskDetailView_Previews: PreviewProvider {
         static var previews: some View {
-            TaskDetailView(showTaskDetailView: .constant(false), taskDetail: .constant(Task.createMockTasks().first!))
+            TaskDetailView(taskViewModel: TaskViewModel(),
+                           showTaskDetailView: .constant(false),
+                           taskDetail: .constant(Task.createMockTasks().first!),
+                           refreshTaskList: .constant(false))
         }
     }
     

@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var showAddTaskView:Bool = false
     @State private var showTaskDetailView:Bool = false
     @State private var selectedTask: Task = Task(id: 0, name: "", description: "", isActive: false, finishDate: Date())
+    @State private var refreshTaskList: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -41,7 +42,11 @@ struct HomeView: View {
                 }
             }.onAppear{
                 taskViewModel.getTasks(isActive: true)
-            }.listStyle(.plain)
+            }
+            .onChange(of: refreshTaskList, perform: { _ in
+                taskViewModel.getTasks(isActive: defaultSelection == "Active")
+            })
+            .listStyle(.plain)
                 .navigationTitle("Home")
                 .toolbar{
                     ToolbarItem(placement: .navigationBarTrailing, content: {
@@ -54,10 +59,10 @@ struct HomeView: View {
                     })
                 }
                 .sheet(isPresented: $showAddTaskView, content: {
-                    AddTaskView(taskViewModel: taskViewModel, showAddTaskView: $showAddTaskView)
+                    AddTaskView(taskViewModel: taskViewModel, showAddTaskView: $showAddTaskView, refreshTaskList: $refreshTaskList)
                 })
                 .sheet(isPresented: $showTaskDetailView, content: {
-                    TaskDetailView(showTaskDetailView:$showTaskDetailView , taskDetail: $selectedTask)
+                    TaskDetailView(taskViewModel: taskViewModel, showTaskDetailView:$showTaskDetailView , taskDetail: $selectedTask, refreshTaskList:$refreshTaskList)
                 })
         }
         
